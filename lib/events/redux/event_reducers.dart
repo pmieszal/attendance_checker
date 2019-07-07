@@ -1,15 +1,25 @@
 import 'package:attendance_checker/events/redux/event_actions.dart';
 import 'package:attendance_checker/events/models/event.dart';
-
-List<Event> eventReducers(List<Event> events, dynamic action) {
-  if (action is AddEventAction) {
-    return addEvent(events, action);
-  }
-
-  return events;
-}
-
+import 'package:redux/redux.dart';
 
 List<Event> addEvent(List<Event> events, AddEventAction action) {
   return List.from(events)..add(action.event);
 }
+
+class NewEventAction {
+  final Event event;
+
+  NewEventAction(this.event);
+}
+
+Event newEvent(Event event, NewEventAction action) {
+  return action.event;
+}
+
+final Reducer <List<Event>> eventReducers = combineReducers <List<Event>>([
+  new TypedReducer<List<Event>, AddEventAction>(addEvent),
+]);
+
+final Reducer <Event> newEventReducers = combineReducers <Event>([
+  new TypedReducer<Event, NewEventAction>(newEvent),
+]);

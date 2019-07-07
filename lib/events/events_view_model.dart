@@ -5,19 +5,13 @@ import 'package:redux/redux.dart';
 
 class EventsViewModel {
   final List<Event> events;
-  final Function(String name, DateTime time) onAddEvent;
 
   EventsViewModel({
     this.events,
-    this.onAddEvent,
   });
 
   factory EventsViewModel.create(Store<AppState> store) {
-    _onAddEvent(String name, DateTime date) {
-      Event event = Event(name, date);
-      store.dispatch(AddEventAction(event));
-    }
 
-    return EventsViewModel(events: store.state.events, onAddEvent: _onAddEvent);
+    return EventsViewModel(events: store.state.events,);
   }
 }

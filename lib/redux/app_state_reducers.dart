@@ -3,6 +3,7 @@ import 'package:attendance_checker/models/app_state.dart';
 
 AppState appStateReducer(AppState state, action) {
   return AppState(
-    eventReducers(state.events, action)
+    eventReducers(state.events, action),
+    newEventReducers(state.newEvent, action)
   );
 }
