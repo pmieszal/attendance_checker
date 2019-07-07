@@ -1,12 +1,17 @@
-import 'package:attendance_checker/events/event.dart';
-import 'package:attendance_checker/events/event_actions.dart';
-import 'package:attendance_checker/main.dart';
+import 'package:attendance_checker/events/events_view_model.dart';
+import 'package:attendance_checker/events/models/event.dart';
+import 'package:attendance_checker/events/redux/event_actions.dart';
+import 'package:attendance_checker/models/app_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class EventsPage extends StatefulWidget {
+  final EventsViewModel viewModel;
+
+  EventsPage(this.viewModel);
+
   @override
   EventsPageState createState() => EventsPageState();
 }
@@ -14,15 +19,11 @@ class EventsPage extends StatefulWidget {
 typedef OnItemAddedCallback = Function(String name, DateTime date);
 
 class EventsPageState extends State<EventsPage> {
-  int elements = 0;
   BuildContext context;
 
   @override
   Widget build(BuildContext context) {
     this.context = context;
-    return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) {
         return CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
               middle: Text("Events"),
@@ -43,16 +44,14 @@ class EventsPageState extends State<EventsPage> {
               ),
             ),
             child: ListView.builder(
-              itemCount: state.events.length,
-              itemBuilder: (context, position) => getRow(state.events[position]),
+              itemCount: widget.viewModel.events.length,
+              itemBuilder: (context, position) => getRow(widget.viewModel.events[position]),
             ));
-      },
-    );
   }
 
-  navigateToNewEvent() {
+  _navigateToNewEvent() {
     Navigator.of(context).push(
-        CupertinoPageRoute(builder: (BuildContext context) => EventsPage()));
+        CupertinoPageRoute(builder: (BuildContext context) => EventsPage(widget.viewModel)));
   }
 
   Widget getRow(Event event) {
@@ -63,8 +62,7 @@ class EventsPageState extends State<EventsPage> {
       ),
       onTap: () {
         setState(() {
-          // widgets.add(getRow(widgets.length + 1));
-          print('row $event');
+          print('row ${event.name} ${event.date}');
         });
       },
     );

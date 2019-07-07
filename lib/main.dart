@@ -1,25 +1,11 @@
-import 'package:attendance_checker/events/event_reducers.dart';
+import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/events_widget.dart';
-import 'package:attendance_checker/events/event.dart';
+import 'package:attendance_checker/models/app_state.dart';
+import 'package:attendance_checker/redux/app_state_reducers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-class AppState {
-  final List<Event> events;
-
-  AppState(this.events);
-
-  factory AppState.initialState() => new AppState(List());
-}
-
-AppState appStateReducer(AppState state, action) {
-  return AppState(
-    eventReducers(state.events, action)
-  );
-}
 
 void main() {
   final store = Store<AppState>(
@@ -45,14 +31,17 @@ class FlutterReduxApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      theme: CupertinoThemeData(
-        primaryColor: Colors.green,
-      ),
-      home: EventsPage(),
-    );
+    return StoreConnector<AppState, EventsViewModel>(
+        converter: (store) => EventsViewModel.create(store),
+        builder: (context, viewModel) {
+          return CupertinoApp(
+            theme: CupertinoThemeData(
+              primaryColor: Colors.green,
+            ),
+            home: EventsPage(viewModel),
+          );
+        });
   }
 }
