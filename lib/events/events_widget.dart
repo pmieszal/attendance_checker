@@ -1,12 +1,9 @@
 import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/models/event.dart';
-import 'package:attendance_checker/events/redux/event_actions.dart';
-import 'package:attendance_checker/models/app_state.dart';
 import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import "package:intl/intl.dart";
 
 class EventsPage extends StatefulWidget {
