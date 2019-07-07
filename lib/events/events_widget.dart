@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import "package:intl/intl.dart";
 
 class EventsPage extends StatefulWidget {
   final EventsViewModel viewModel;
@@ -24,41 +25,55 @@ class EventsPageState extends State<EventsPage> {
   @override
   Widget build(BuildContext context) {
     this.context = context;
-        return CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text("Events"),
-              trailing: StoreConnector<AppState, OnItemAddedCallback>(
-                converter: (store) {
-                  return (name, date) => store.dispatch(
-                      AddEventAction(Event(name, date)));
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("Events"),
+          trailing: StoreConnector<AppState, OnItemAddedCallback>(
+            converter: (store) {
+              return (name, date) =>
+                  store.dispatch(AddEventAction(Event(name, date)));
+            },
+            builder: (context, callback) {
+              return CupertinoButton(
+                onPressed: () {
+                  callback("new ${widget.viewModel.events.length + 1}", DateTime.now());
                 },
-                builder: (context, callback) {
-                  return CupertinoButton(
-                    onPressed: () {
-                      callback("new", DateTime.now());
-                    },
-                    child: Icon(Icons.add),
-                    padding: EdgeInsets.all(0),
-                  );
-                },
-              ),
-            ),
-            child: ListView.builder(
-              itemCount: widget.viewModel.events.length,
-              itemBuilder: (context, position) => getRow(widget.viewModel.events[position]),
-            ));
+                child: Icon(Icons.add),
+                padding: EdgeInsets.all(0),
+              );
+            },
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: widget.viewModel.events.length,
+          itemBuilder: (context, position) =>
+              getRow(widget.viewModel.events[position]),
+        ));
   }
 
   _navigateToNewEvent() {
-    Navigator.of(context).push(
-        CupertinoPageRoute(builder: (BuildContext context) => EventsPage(widget.viewModel)));
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (BuildContext context) => EventsPage(widget.viewModel)));
   }
 
   Widget getRow(Event event) {
+    String date = DateFormat.yMMMMEEEEd().format(event.date);
+
     return GestureDetector(
       child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Text(event.name),
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Expanded(
+              child: Text(event.name),
+            ),
+            Text(
+                date,
+                textScaleFactor: 0.8,
+              )
+          ],
+        ),
       ),
       onTap: () {
         setState(() {
