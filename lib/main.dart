@@ -7,9 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+_loggingMiddleware(Store<AppState> store, action, NextDispatcher next) {
+  print('${new DateTime.now()}: $action');
+
+  next(action);
+}
+
 void main() {
   final store = Store<AppState>(
     appStateReducer,
+    middleware: [_loggingMiddleware],
     initialState: AppState.initialState(),
   );
 

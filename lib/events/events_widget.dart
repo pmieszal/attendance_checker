@@ -2,6 +2,7 @@ import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/models/event.dart';
 import 'package:attendance_checker/events/redux/event_actions.dart';
 import 'package:attendance_checker/models/app_state.dart';
+import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -28,20 +29,10 @@ class EventsPageState extends State<EventsPage> {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Events"),
-          trailing: StoreConnector<AppState, OnItemAddedCallback>(
-            converter: (store) {
-              return (name, date) =>
-                  store.dispatch(AddEventAction(Event(name, date)));
-            },
-            builder: (context, callback) {
-              return CupertinoButton(
-                onPressed: () {
-                  callback("new ${widget.viewModel.events.length + 1}", DateTime.now());
-                },
-                child: Icon(Icons.add),
-                padding: EdgeInsets.all(0),
-              );
-            },
+          trailing: CupertinoButton(
+            onPressed: _navigateToNewEvent,
+            child: Icon(Icons.add),
+            padding: EdgeInsets.all(0),
           ),
         ),
         child: ListView.builder(
@@ -52,8 +43,8 @@ class EventsPageState extends State<EventsPage> {
   }
 
   _navigateToNewEvent() {
-    Navigator.of(context).push(CupertinoPageRoute(
-        builder: (BuildContext context) => EventsPage(widget.viewModel)));
+    Navigator.of(context).push(
+        CupertinoPageRoute(builder: (BuildContext context) => NewEventPage()));
   }
 
   Widget getRow(Event event) {
@@ -69,9 +60,9 @@ class EventsPageState extends State<EventsPage> {
               child: Text(event.name),
             ),
             Text(
-                date,
-                textScaleFactor: 0.8,
-              )
+              date,
+              textScaleFactor: 0.8,
+            )
           ],
         ),
       ),
