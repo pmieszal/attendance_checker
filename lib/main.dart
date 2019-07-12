@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-_loggingMiddleware(Store<AppState> store, action, NextDispatcher next) {
+_loggingMiddleware(Store<AppState> store, dynamic action, NextDispatcher next) {
   print('${new DateTime.now()}: $action');
 
   next(action);
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             theme: CupertinoThemeData(
               primaryColor: Colors.green,
             ),
-            home: EventsPage(viewModel),
+            home: EventsPage(),
           );
         });
   }

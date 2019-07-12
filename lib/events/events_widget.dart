@@ -9,43 +9,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import "package:intl/intl.dart";
 
-class EventsPage extends StatefulWidget {
-  final EventsViewModel viewModel;
+class EventsPage extends StatelessWidget {
 
-  EventsPage(this.viewModel);
-
-  @override
-  EventsPageState createState() => EventsPageState();
-}
-
-typedef OnItemAddedCallback = Function(String name, DateTime date);
-
-class EventsPageState extends State<EventsPage> {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, NewEventViewModel>(
-        converter: (store) => NewEventViewModel(store),
-        builder: (context, viewModel) {
+    return StoreConnector<AppState, EventsViewModel>(
+        converter: (store) => EventsViewModel.create(store),
+        builder: (context, EventsViewModel viewModel) {
           return CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
                 middle: Text("Events"),
                 trailing: CupertinoButton(
-                  onPressed: () => _navigateToNewEvent(viewModel),
+                  onPressed: () => _navigateToNewEvent(context),
                   child: Icon(Icons.add),
                   padding: EdgeInsets.all(0),
                 ),
               ),
               child: ListView.builder(
-                itemCount: widget.viewModel.events.length,
+                itemCount: viewModel.events.length,
                 itemBuilder: (context, position) =>
-                    getRow(widget.viewModel.events[position]),
+                    getRow(viewModel.events[position]),
               ));
         });
+
   }
 
-  _navigateToNewEvent(viewModel) {
+  _navigateToNewEvent(BuildContext context) {
     Navigator.of(context).push(
-        CupertinoPageRoute(builder: (BuildContext context) => NewEventPage(viewModel)));
+        CupertinoPageRoute(builder: (BuildContext context) => NewEventPage()));
   }
 
   Widget getRow(Event event) {
@@ -67,11 +58,7 @@ class EventsPageState extends State<EventsPage> {
           ],
         ),
       ),
-      onTap: () {
-        setState(() {
-          print('row ${event.name} ${event.date}');
-        });
-      },
     );
   }
 }
+typedef OnItemAddedCallback = Function(String name, DateTime date);
