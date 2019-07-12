@@ -9,8 +9,7 @@ class EventsViewModel {
     this.events,
   });
 
-  factory EventsViewModel.create(Store<AppState> store) {
-
+  factory EventsViewModel.create(Store<EventsState> store) {
     return EventsViewModel(events: store.state.events,);
   }
 }

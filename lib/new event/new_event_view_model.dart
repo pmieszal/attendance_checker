@@ -7,6 +7,7 @@ import 'package:redux/redux.dart';
 class NewEventViewModel {
   final DateTime date;
   final String name;
+  final bool saveButtonEnabled;
   final Function() onAddEvent;
   final Function(String) changeName;
   final Function(DateTime) changeDate;
@@ -14,23 +15,29 @@ class NewEventViewModel {
   NewEventViewModel(
     this.date,
     this.name,
+    this.saveButtonEnabled,
     this.onAddEvent,
     this.changeName,
     this.changeDate,
   );
 
-  factory NewEventViewModel.create(Store<AppState> store) {
+  factory NewEventViewModel.create(Store<NewEventState> store) {
     String name = "";
     DateTime date = DateTime.now();
 
-    if (store.state.newEvent != null) {
-      name = store.state.newEvent.name;
-      date = store.state.newEvent.date;
+    if (store.state.event != null) {
+      name = store.state.event.name;
+      date = store.state.event.date;
     }
 
+    bool saveButtonEnabled = name.length > 3;
+
     _onAddEvent() {
+      if (saveButtonEnabled == false) { return; }
+
       Event event = Event(name, date);
       store.dispatch(AddEventAction(event));
+      store.dispatch(NewEventAction(null));
     }
 
     _changeName(String name) {
@@ -42,7 +49,6 @@ class NewEventViewModel {
       Event event = Event(name, date);
       store.dispatch(NewEventAction(event));
     }
-
-    return NewEventViewModel(date, name, _onAddEvent, _changeName, _changeDate);
+    return NewEventViewModel(date, name, saveButtonEnabled, _onAddEvent, _changeName, _changeDate);
   }
 }

@@ -8,11 +8,23 @@ import 'package:intl/intl.dart';
 class NewEventPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, NewEventViewModel>(
+    return StoreConnector<NewEventState, NewEventViewModel>(
       converter: (store) => NewEventViewModel.create(store),
       builder: (context, NewEventViewModel viewModel) => CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
               middle: Text("New Event"),
+              trailing: CupertinoButton(
+                child: Text(
+                  "Save",
+                  style: TextStyle(
+                    color: viewModel.saveButtonEnabled
+                        ? Colors.lightGreen
+                        : Colors.grey,
+                  ),
+                ),
+                onPressed: viewModel.onAddEvent,
+                padding: EdgeInsets.all(0),
+              ),
             ),
             child: ListView(
               shrinkWrap: true,
@@ -54,7 +66,8 @@ class NewEventPage extends StatelessWidget {
     );
   }
 
-  Future<DateTime> _showDatePicker(BuildContext context, DateTime initial) async {
+  Future<DateTime> _showDatePicker(
+      BuildContext context, DateTime initial) async {
     DateTime selectedDate;
     await showCupertinoModalPopup<DateTime>(
         context: context,

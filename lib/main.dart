@@ -1,6 +1,6 @@
-import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/events_widget.dart';
 import 'package:attendance_checker/models/app_state.dart';
+import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:attendance_checker/redux/app_state_reducers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,23 +32,40 @@ class FlutterReduxApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MyApp(),
+      child: CupertinoApp(
+        theme: CupertinoThemeData(
+          primaryColor: Colors.green,
+        ),
+        routes: {
+          Navigator.defaultRouteName: (context) => EventsStoreProvider.create(store.state.eventsState),
+          "/new": (context) => StoreProvider<NewEventState>(
+                store: Store<NewEventState>(
+                  newEventStateReducer,
+                  middleware: [],
+                  initialState: store.state.newEventState,
+                ),
+                child: NewEventPage(),
+              ),
+        },
+      ),
     );
   }
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, EventsViewModel>(
-        converter: (store) => EventsViewModel.create(store),
-        builder: (context, viewModel) {
-          return CupertinoApp(
-            theme: CupertinoThemeData(
-              primaryColor: Colors.green,
-            ),
-            home: EventsPage(),
-          );
-        });
+class EventsStoreProvider extends StoreProvider<EventsState> {
+  EventsStoreProvider({
+    @required Store<EventsState> store,
+    @required Widget child,
+  });
+
+  factory EventsStoreProvider.create(EventsState state) {
+    return EventsStoreProvider(
+      store: Store<EventsState>(
+        eventsStateReducer,
+        middleware: [],
+        initialState: state,
+      ),
+      child: EventsPage(),
+    );
   }
 }
