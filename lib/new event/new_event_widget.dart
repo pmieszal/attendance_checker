@@ -1,72 +1,71 @@
+import 'package:attendance_checker/models/app_state.dart';
 import 'package:attendance_checker/new%20event/new_event_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 
-class NewEventPage extends StatefulWidget {
-  final NewEventViewModel viewModel;
+class NewEventPage extends StatelessWidget {
 
-  NewEventPage(this.viewModel);
-
-  @override
-  _NewEventPageState createState() => _NewEventPageState();
-}
-
-class _NewEventPageState extends State<NewEventPage> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text("New Event"),
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          CupertinoTextField(
-            padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-            placeholder: "Name",
-            onChanged: widget.viewModel.changeName,
-          ),
-          GestureDetector(
-            onTap: _showDatePicker,
-            child: Row(
-              children: <Widget>[
-                Opacity(
-                  opacity: 0.2,
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text("Date"),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      DateFormat.yMMMMEEEEd().format(widget.viewModel.date),
-                      textAlign: TextAlign.right,
+    return StoreConnector<AppState, NewEventViewModel>(
+      converter: (store) => NewEventViewModel(store),
+      builder: (context, NewEventViewModel viewModel) => CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("New Event"),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            CupertinoTextField(
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+              placeholder: "Name",
+              onChanged: viewModel.changeName,
+            ),
+            GestureDetector(
+              onTap: () async {
+                var date = await _showDatePicker(context, viewModel.date);
+                viewModel.changeDate(date);
+              },
+              child: Row(
+                children: <Widget>[
+                  Opacity(
+                    opacity: 0.2,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text("Date"),
                     ),
                   ),
-                )
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        DateFormat.yMMMMEEEEd().format(viewModel.date),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  _showDatePicker() {
-    showCupertinoModalPopup<void>(
+  Future<DateTime> _showDatePicker(BuildContext context, DateTime initial) {
+    return showCupertinoModalPopup<DateTime>(
         context: context,
-        builder: (BuildContext context) {
-          return _buildBottomPicker(
+        builder: (BuildContext context) => _buildBottomPicker(
             CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
-              initialDateTime: widget.viewModel.date,
-              onDateTimeChanged: widget.viewModel.changeDate,
+              initialDateTime: initial,
+              onDateTimeChanged: (date) => {},
             ),
-          );
-        });
+          ),
+    );
   }
 
   _buildBottomPicker(Widget picker) {
