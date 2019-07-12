@@ -1,5 +1,4 @@
 import 'package:attendance_checker/events/models/event.dart';
-import 'package:attendance_checker/events/redux/event_actions.dart';
 import 'package:attendance_checker/models/app_state.dart';
 import 'package:redux/redux.dart';
 
