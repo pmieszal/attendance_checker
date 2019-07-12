@@ -5,32 +5,44 @@ import 'package:attendance_checker/new%20event/redux/new_event_action.dart';
 import 'package:redux/redux.dart';
 
 class NewEventViewModel {
-  DateTime _date = DateTime.now();
-  String _name = "";
-  Function() onAddEvent;
-  Function(String) changeName;
-  Function(DateTime) changeDate;
+  final DateTime date;
+  final String name;
+  final Function() onAddEvent;
+  final Function(String) changeName;
+  final Function(DateTime) changeDate;
 
-  DateTime get date {
-    return _date;
-  }
+  NewEventViewModel(
+    this.date,
+    this.name,
+    this.onAddEvent,
+    this.changeName,
+    this.changeDate,
+  );
 
-  NewEventViewModel(Store<AppState> store) {
-    onAddEvent = () {
-      Event event = Event(_name, _date);
+  factory NewEventViewModel.create(Store<AppState> store) {
+    String name = "";
+    DateTime date = DateTime.now();
+
+    if (store.state.newEvent != null) {
+      name = store.state.newEvent.name;
+      date = store.state.newEvent.date;
+    }
+
+    _onAddEvent() {
+      Event event = Event(name, date);
       store.dispatch(AddEventAction(event));
-    };
+    }
 
-    changeName = (String name) {
-      _name = name;
-      Event event = Event(_name, _date);
+    _changeName(String name) {
+      Event event = Event(name, date);
       store.dispatch(NewEventAction(event));
-    };
+    }
 
-    changeDate = (DateTime date) {
-      _date = date;
-      Event event = Event(_name, _date);
+    _changeDate(DateTime date) {
+      Event event = Event(name, date);
       store.dispatch(NewEventAction(event));
-    };
+    }
+
+    return NewEventViewModel(date, name, _onAddEvent, _changeName, _changeDate);
   }
 }
