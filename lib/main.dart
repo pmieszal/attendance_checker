@@ -1,5 +1,6 @@
 import 'package:attendance_checker/events/events_widget.dart';
 import 'package:attendance_checker/models/app_state.dart';
+import 'package:attendance_checker/models/app_state.dart' as prefix0;
 import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:attendance_checker/redux/app_state_reducers.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-_loggingMiddleware(Store<AppState> store, dynamic action, NextDispatcher next) {
+_loggingMiddleware(
+    Store<prefix0.State> store, dynamic action, NextDispatcher next) {
   print('${new DateTime.now()}: $action');
 
   next(action);
@@ -37,21 +39,28 @@ class FlutterReduxApp extends StatelessWidget {
           primaryColor: Colors.green,
         ),
         routes: {
-          Navigator.defaultRouteName: (context) => StoreProvider<EventsState>(
-                store: Store<EventsState>(
-                  eventsStateReducer,
-                  middleware: [],
-                  initialState: store.state.eventsState,
-                ),
-                child: EventsPage(),
+          Navigator.defaultRouteName: (context) =>
+              StoreConnector<AppState, EventsState>(
+                converter: (store) => store.state.eventsState,
+                builder: (context, eventsState) => StoreProvider<EventsState>(
+                      store: Store<EventsState>(
+                        eventsStateReducer,
+                        middleware: [_loggingMiddleware],
+                        initialState: eventsState,
+                      ),
+                      child: EventsPage(),
+                    ),
               ),
-          "/new": (context) => StoreProvider<NewEventState>(
-                store: Store<NewEventState>(
-                  newEventStateReducer,
-                  middleware: [],
-                  initialState: store.state.newEventState,
-                ),
-                child: NewEventPage(),
+          "/new": (context) => StoreConnector<AppState, NewEventState>(
+                converter: (store) => store.state.newEventState,
+                builder: (context, eventsState) => StoreProvider<NewEventState>(
+                      store: Store<NewEventState>(
+                        newEventStateReducer,
+                        middleware: [_loggingMiddleware],
+                        initialState: store.state.newEventState,
+                      ),
+                      child: NewEventPage(),
+                    ),
               ),
         },
       ),
