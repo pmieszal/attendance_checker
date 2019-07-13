@@ -15,11 +15,11 @@ import 'package:attendance_checker/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-  final store = Store<AppState>(
-    appStateReducer,
-    middleware: [],
-    initialState: AppState.initialState(),
-  );
+    final store = Store<AppState>(
+      appStateReducer,
+      middleware: [],
+      initialState: AppState.initialState(),
+    );
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(FlutterReduxApp(store));

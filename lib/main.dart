@@ -37,7 +37,14 @@ class FlutterReduxApp extends StatelessWidget {
           primaryColor: Colors.green,
         ),
         routes: {
-          Navigator.defaultRouteName: (context) => EventsStoreProvider.create(store.state.eventsState),
+          Navigator.defaultRouteName: (context) => StoreProvider<EventsState>(
+                store: Store<EventsState>(
+                  eventsStateReducer,
+                  middleware: [],
+                  initialState: store.state.eventsState,
+                ),
+                child: EventsPage(),
+              ),
           "/new": (context) => StoreProvider<NewEventState>(
                 store: Store<NewEventState>(
                   newEventStateReducer,
@@ -48,24 +55,6 @@ class FlutterReduxApp extends StatelessWidget {
               ),
         },
       ),
-    );
-  }
-}
-
-class EventsStoreProvider extends StoreProvider<EventsState> {
-  EventsStoreProvider({
-    @required Store<EventsState> store,
-    @required Widget child,
-  });
-
-  factory EventsStoreProvider.create(EventsState state) {
-    return EventsStoreProvider(
-      store: Store<EventsState>(
-        eventsStateReducer,
-        middleware: [],
-        initialState: state,
-      ),
-      child: EventsPage(),
     );
   }
 }
