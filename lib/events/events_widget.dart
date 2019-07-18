@@ -57,5 +57,3 @@ class EventsPage extends StatelessWidget {
     );
   }
 }
-
-typedef OnItemAddedCallback = Function(String name, DateTime date);
