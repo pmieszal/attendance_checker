@@ -7,5 +7,5 @@ class EventsState {
     this.events,
   );
 
-  factory EventsState.initialState() => EventsState(List());
+  factory EventsState.initialState() => EventsState([]);
 }

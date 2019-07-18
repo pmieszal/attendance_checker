@@ -10,7 +10,7 @@ import 'package:redux/redux.dart';
 
 _loggingMiddleware(
     Store<AppState> store, dynamic action, NextDispatcher next) {
-  print('${new DateTime.now()}: $action');
+  print('${DateTime.now()}: $action');
 
   next(action);
 }

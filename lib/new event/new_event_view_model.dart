@@ -12,39 +12,49 @@ class NewEventViewModel {
   final Function(String) changeName;
   final Function(DateTime) changeDate;
 
-  NewEventViewModel(
+  NewEventViewModel({
     this.date,
     this.name,
     this.saveButtonEnabled,
     this.onAddEvent,
     this.changeName,
     this.changeDate,
-  );
+  });
 
   factory NewEventViewModel.create(Store<AppState> store) {
     var event = store.state.newEventState.event;
-    String name = event.name ?? "";
-    DateTime date = event.date ?? DateTime.now();
+    var name = event.name ?? "";
+    var date = event.date ?? DateTime.now();
 
-    bool saveButtonEnabled = name.length >= 3;
+    var buttonEnabled = name.length >= 3;
 
     _onAddEvent() {
-      if (saveButtonEnabled == false) { return; }
+      if (buttonEnabled == false) {
+        return;
+      }
 
-      Event event = Event(name: name, date: date);
+      var event = Event(name: name, date: date);
       store.dispatch(AddEventAction(event));
       store.dispatch(NewEventAction(Event()));
     }
 
     _changeName(String newName) {
-      Event event = Event(name: newName, date: date);
+      var event = Event(name: newName, date: date);
       store.dispatch(NewEventAction(event));
     }
 
     _changeDate(DateTime newDate) {
-      Event event = Event(name: name, date: newDate ?? date);
+      var event = Event(name: name, date: newDate ?? date);
       store.dispatch(NewEventAction(event));
     }
-    return NewEventViewModel(date, name, saveButtonEnabled, _onAddEvent, _changeName, _changeDate);
+
+    return NewEventViewModel(
+      date: date,
+      name: name,
+      onAddEvent: _onAddEvent,
+      changeName: _changeName,
+      changeDate: _changeDate,
+      saveButtonEnabled: buttonEnabled,
+    );
   }
 }
