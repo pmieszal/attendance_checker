@@ -6,9 +6,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 
 class NewEventPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<NewEventState, NewEventViewModel>(
+    return StoreConnector<AppState, NewEventViewModel>(
       converter: (store) => NewEventViewModel.create(store),
       builder: (context, NewEventViewModel viewModel) => CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
@@ -83,6 +84,7 @@ class NewEventPage extends StatelessWidget {
 
     return selectedDate;
   }
+
 
   _buildBottomPicker(Widget picker) {
     return Container(

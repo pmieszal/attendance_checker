@@ -21,32 +21,28 @@ class NewEventViewModel {
     this.changeDate,
   );
 
-  factory NewEventViewModel.create(Store<NewEventState> store) {
-    String name = "";
-    DateTime date = DateTime.now();
+  factory NewEventViewModel.create(Store<AppState> store) {
+    var event = store.state.newEventState.event;
+    String name = event.name ?? "";
+    DateTime date = event.date ?? DateTime.now();
 
-    if (store.state.event != null) {
-      name = store.state.event.name;
-      date = store.state.event.date;
-    }
-
-    bool saveButtonEnabled = name.length > 3;
+    bool saveButtonEnabled = name.length >= 3;
 
     _onAddEvent() {
       if (saveButtonEnabled == false) { return; }
 
-      Event event = Event(name, date);
+      Event event = Event(name: name, date: date);
       store.dispatch(AddEventAction(event));
-      store.dispatch(NewEventAction(null));
+      store.dispatch(NewEventAction(Event()));
     }
 
-    _changeName(String name) {
-      Event event = Event(name, date);
+    _changeName(String newName) {
+      Event event = Event(name: newName, date: date);
       store.dispatch(NewEventAction(event));
     }
 
-    _changeDate(DateTime date) {
-      Event event = Event(name, date);
+    _changeDate(DateTime newDate) {
+      Event event = Event(name: name, date: newDate ?? date);
       store.dispatch(NewEventAction(event));
     }
     return NewEventViewModel(date, name, saveButtonEnabled, _onAddEvent, _changeName, _changeDate);

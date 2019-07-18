@@ -13,7 +13,7 @@ class AppState implements State {
 
   AppState(this.eventsState, this.newEventState);
 
-  factory AppState.initialState() => new AppState(EventsState.initialState(), NewEventState.initialState());
+  factory AppState.initialState() => AppState(EventsState.initialState(), NewEventState.initialState());
 }
 
 class EventsState implements State {
@@ -23,7 +23,7 @@ class EventsState implements State {
     this.events,
   );
 
-  factory EventsState.initialState() => new EventsState(List());
+  factory EventsState.initialState() => EventsState(List());
 }
 
 class ChangeEventsStateAction {
@@ -49,7 +49,7 @@ class NewEventState implements State {
     this.event,
   );
 
-  factory NewEventState.initialState() => new NewEventState(null);
+  factory NewEventState.initialState() => NewEventState(Event());
 }
 
 NewEventState newEventStateReducer(NewEventState state, action) {
