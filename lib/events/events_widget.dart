@@ -1,6 +1,7 @@
 import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/models/event.dart';
 import 'package:attendance_checker/models/app_state.dart';
+import 'package:attendance_checker/routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class EventsPage extends StatelessWidget {
   }
 
   _navigateToNewEvent(BuildContext context) {
-    Navigator.of(context).pushNamed("/new");
+    Navigator.of(context).pushNamed(AppRoutes.newEvent);
   }
 
   Widget getRow(Event event) {
