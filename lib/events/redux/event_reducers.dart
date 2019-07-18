@@ -7,5 +7,5 @@ List<Event> addEvent(List<Event> events, AddEventAction action) {
 }
 
 final Reducer<List<Event>> eventReducers = combineReducers <List<Event>>([
-  new TypedReducer<List<Event>, AddEventAction>(addEvent),
+  TypedReducer<List<Event>, AddEventAction>(addEvent),
 ]);

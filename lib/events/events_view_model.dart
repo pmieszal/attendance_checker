@@ -9,7 +9,6 @@ class EventsViewModel {
     this.events,
   });
 
-  factory EventsViewModel.create(Store<AppState> store) {
-    return EventsViewModel(events: store.state.eventsState.events,);
-  }
+  factory EventsViewModel.create(Store<AppState> store) =>
+      EventsViewModel(events: store.state.eventsState.events,);
 }

@@ -37,7 +37,7 @@ class EventsPage extends StatelessWidget {
   }
 
   Widget getRow(Event event) {
-    String date = DateFormat.yMMMMEEEEd().format(event.date);
+    var date = DateFormat.yMMMMEEEEd().format(event.date);
 
     return GestureDetector(
       child: Padding(
