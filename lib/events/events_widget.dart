@@ -1,8 +1,6 @@
 import 'package:attendance_checker/events/events_view_model.dart';
 import 'package:attendance_checker/events/models/event.dart';
 import 'package:attendance_checker/models/app_state.dart';
-import 'package:attendance_checker/new%20event/new_event_view_model.dart';
-import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,33 +8,31 @@ import 'package:flutter_redux/flutter_redux.dart';
 import "package:intl/intl.dart";
 
 class EventsPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, EventsViewModel>(
         converter: (store) => EventsViewModel.create(store),
         builder: (context, EventsViewModel viewModel) {
           return CupertinoPageScaffold(
-              navigationBar: CupertinoNavigationBar(
-                middle: Text("Events"),
-                trailing: CupertinoButton(
-                  onPressed: () => _navigateToNewEvent(context),
-                  child: Icon(Icons.add),
-                  padding: EdgeInsets.all(0),
-                ),
+            navigationBar: CupertinoNavigationBar(
+              middle: Text("Events"),
+              trailing: CupertinoButton(
+                onPressed: () => _navigateToNewEvent(context),
+                child: Icon(Icons.add),
+                padding: EdgeInsets.all(0),
               ),
-              child: ListView.builder(
-                itemCount: viewModel.events.length,
-                itemBuilder: (context, position) =>
-                    getRow(viewModel.events[position]),
-              ));
+            ),
+            child: ListView.builder(
+              itemCount: viewModel.events.length,
+              itemBuilder: (context, position) =>
+                  getRow(viewModel.events[position]),
+            ),
+          );
         });
-
   }
 
   _navigateToNewEvent(BuildContext context) {
-    Navigator.of(context).push(
-        CupertinoPageRoute(builder: (BuildContext context) => NewEventPage()));
+    Navigator.of(context).pushNamed("/new");
   }
 
   Widget getRow(Event event) {
@@ -61,4 +57,3 @@ class EventsPage extends StatelessWidget {
     );
   }
 }
-typedef OnItemAddedCallback = Function(String name, DateTime date);

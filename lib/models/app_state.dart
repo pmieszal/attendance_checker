@@ -1,10 +1,12 @@
-import 'package:attendance_checker/events/models/event.dart';
+import 'package:attendance_checker/models/events_state.dart';
+import 'package:attendance_checker/models/new_event_state.dart';
 
 class AppState {
-  final List<Event> events;
-  final Event newEvent;
+  final EventsState eventsState;
+  final NewEventState newEventState;
 
-  AppState(this.events, this.newEvent);
+  AppState(this.eventsState, this.newEventState);
 
-  factory AppState.initialState() => new AppState(List(), null);
+  factory AppState.initialState() =>
+      AppState(EventsState.initialState(), NewEventState.initialState());
 }

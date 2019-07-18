@@ -10,7 +10,6 @@ class EventsViewModel {
   });
 
   factory EventsViewModel.create(Store<AppState> store) {
-
-    return EventsViewModel(events: store.state.events,);
+    return EventsViewModel(events: store.state.eventsState.events,);
   }
 }
