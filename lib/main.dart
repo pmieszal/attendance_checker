@@ -39,22 +39,8 @@ class FlutterReduxApp extends StatelessWidget {
           primaryColor: Colors.green,
         ),
         routes: {
-          Navigator.defaultRouteName: (context) =>
-              StoreConnector<AppState, EventsState>(
-                converter: (store) => store.state.eventsState,
-                builder: (context, eventsState) => StoreProvider<EventsState>(
-                  store: Store<EventsState>(
-                    eventsStateReducer,
-                    middleware: [_loggingMiddleware],
-                    initialState: eventsState,
-                  ),
-                  child: EventsPage(),
-                ),
-              ),
-          "/new": (context) => StoreConnector<AppState, NewEventState>(
-                converter: (store) => store.state.newEventState,
-                builder: (context, state) => NewEventPage(),
-              )
+          Navigator.defaultRouteName: (context) => EventsPage(),
+          "/new": (context) => NewEventPage(),
         },
       ),
     );

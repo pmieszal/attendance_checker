@@ -10,7 +10,7 @@ import "package:intl/intl.dart";
 class EventsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<EventsState, EventsViewModel>(
+    return StoreConnector<AppState, EventsViewModel>(
         converter: (store) => EventsViewModel.create(store),
         builder: (context, EventsViewModel viewModel) {
           return CupertinoPageScaffold(
