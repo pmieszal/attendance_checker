@@ -6,69 +6,70 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 
 class NewEventPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, NewEventViewModel>(
       converter: (store) => NewEventViewModel.create(store),
       builder: (context, NewEventViewModel viewModel) => CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text("New Event"),
-              trailing: CupertinoButton(
-                child: Text(
-                  "Save",
-                  style: TextStyle(
-                    color: viewModel.saveButtonEnabled
-                        ? Colors.lightGreen
-                        : Colors.grey,
-                  ),
-                ),
-                onPressed: viewModel.onAddEvent,
-                padding: EdgeInsets.all(0),
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("New Event"),
+          trailing: CupertinoButton(
+            child: Text(
+              "Save",
+              style: TextStyle(
+                color: viewModel.saveButtonEnabled
+                    ? Colors.lightGreen
+                    : Colors.grey,
               ),
             ),
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                CupertinoTextField(
-                  padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                  placeholder: "Name",
-                  onChanged: viewModel.changeName,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    var date = await _showDatePicker(context, viewModel.date);
-                    viewModel.changeDate(date);
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Opacity(
-                        opacity: 0.2,
-                        child: Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Text("Date"),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            DateFormat.yMMMMEEEEd().format(viewModel.date),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            onPressed: viewModel.onAddEvent,
+            padding: EdgeInsets.all(0),
           ),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            CupertinoTextField(
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+              placeholder: "Name",
+              onChanged: viewModel.changeName,
+            ),
+            GestureDetector(
+              onTap: () async {
+                var date = await _showDatePicker(context, viewModel.date);
+                viewModel.changeDate(date);
+              },
+              child: Row(
+                children: <Widget>[
+                  Opacity(
+                    opacity: 0.2,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text("Date"),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        DateFormat.yMMMMEEEEd().format(viewModel.date),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Future<DateTime> _showDatePicker(
-      BuildContext context, DateTime initial) async {
+    BuildContext context,
+    DateTime initial,
+  ) async {
     DateTime selectedDate;
     await showCupertinoModalPopup<DateTime>(
         context: context,
@@ -84,7 +85,6 @@ class NewEventPage extends StatelessWidget {
 
     return selectedDate;
   }
-
 
   _buildBottomPicker(Widget picker) {
     return Container(

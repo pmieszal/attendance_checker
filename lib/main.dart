@@ -1,6 +1,5 @@
 import 'package:attendance_checker/events/events_widget.dart';
 import 'package:attendance_checker/models/app_state.dart';
-import 'package:attendance_checker/models/app_state.dart' as prefix0;
 import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:attendance_checker/redux/app_state_reducers.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 _loggingMiddleware(
-    Store<prefix0.State> store, dynamic action, NextDispatcher next) {
+    Store<AppState> store, dynamic action, NextDispatcher next) {
   print('${new DateTime.now()}: $action');
 
   next(action);
