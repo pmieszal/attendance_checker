@@ -2,6 +2,7 @@ import 'package:attendance_checker/events/events_widget.dart';
 import 'package:attendance_checker/models/app_state.dart';
 import 'package:attendance_checker/new%20event/new_event_widget.dart';
 import 'package:attendance_checker/redux/app_state_reducers.dart';
+import 'package:attendance_checker/routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -38,8 +39,8 @@ class FlutterReduxApp extends StatelessWidget {
           primaryColor: Colors.green,
         ),
         routes: {
-          Navigator.defaultRouteName: (context) => EventsPage(),
-          "/new": (context) => NewEventPage(),
+          AppRoutes.home: (context) => EventsPage(),
+          AppRoutes.newEvent: (context) => NewEventPage(),
         },
       ),
     );
